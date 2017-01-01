@@ -361,8 +361,10 @@ window.onload = function() {
 		return
 	}
 
-	var url = 'cache/' + id + '/index.js'
-	$(document.head).append($('<script src="?"></script>'.replace('?', url)))
+	load_cache('index', function(err, index) {
+		if (err) return
+		init(index)
+	})
 }
 // })
 
