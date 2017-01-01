@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/1-style.css">
+	<link rel="stylesheet" type="text/css" href="css/2-ast.css">
+	<script type="text/javascript" src="lib/jquery.js"></script>
+	<script type="text/javascript" src="lib/utils.js"></script>
+	<script type="text/javascript" src="js/2-util.js"></script>
+	<script type="text/javascript" src="js/3-vdom.js"></script>
+	<script type="text/javascript" src="js/4-lexical.js"></script>
+	<script type="text/javascript" src="js/4-type_handler.js"></script>
+	<script type="text/javascript" src="js/5-main.js"></script>
+</head>
+<body>
+	<!-- 控制区 -->
+	<div id="control">
+		<!-- LOGO -->
+		<span class="logo">
+			<a href="https://github.com/Jianru-Lin/lambda-view" target="_blank">lambda-view <span class="version"></span></a>
+		</span>
+		<!-- 按钮 -->
+		<span class="buttons">
+			<button id="exp-all" x-t="unfold-all">Unfold All</button>
+			<button id="col-all" x-t="fold-all">Fold All</button>
+		</span>
+	</div>
+	<!-- 日志输出 -->
+	<div id="log"></div>
+	<!-- 标题 -->
+	<div id="title">
+		<h1></h1>
+	</div>
+	<!-- 其他主要内容 -->
+	<div id="content"></div>
+	<div id="vdom"></div>
+	<div id="ast"></div>
+</body>
+</html>
