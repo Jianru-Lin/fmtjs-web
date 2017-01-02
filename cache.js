@@ -1,8 +1,13 @@
 var fs = require('fs')
 var path = require('path')
+var os = require('os')
 
-var cache_dir_path = path.resolve(__dirname, 'web/cache')
+var cache_dir_path = path.resolve(os.tmpdir(), 'lambda-view-cache')
 mkdir(cache_dir_path)
+
+exports.root = function() {
+	return cache_dir_path
+}
 
 exports.add = function(id, index) {
 	// make dir
@@ -10,7 +15,7 @@ exports.add = function(id, index) {
 	mkdir(dir)
 	// write file
 	var file = path.resolve(dir, 'index.json')
-	fs.writeFileSync(file, JSON.stringify(index, null, 4))
+	fs.writeFileSync(file, JSON.stringify(index))
 }
 
 function mkdir(path) {

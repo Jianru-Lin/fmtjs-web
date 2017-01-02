@@ -344,15 +344,44 @@ function load_cache(name, cb) {
 		return
 	}
 
-	var url = 'cache/' + id + '/' + name + '.json'
+	var url = id + '/' + name + '.json'
 	$.getJSON(url, function(data) {
 		cb(null, data)
 	})
 }
 
+window.ui = {}
+
+$(function() {
+	var control = new Vue({
+		el: '#control',
+		data: {
+			version: ''
+		}
+	})
+
+	translator.run()
+
+	ui.version = function(v) {
+		control.version = v
+	}
+})
+
+$(function() {
+	var title = new Vue({
+		el: '#title',
+		data: {
+			filename: ''
+		}
+	})
+
+	ui.filename = function(v) {
+		title.filename = v
+	}
+})
+
 // $(function() {
 window.onload = function() {
-	translator.run()
 
 	// load...
 
@@ -369,6 +398,9 @@ window.onload = function() {
 // })
 
 function init(index) {
+	ui.version(index.version)
+	ui.filename(index.filename)
+
 	var ast = index.att.ast
 	var ctx = index.att.ctx
 	// console.log(ctx)
