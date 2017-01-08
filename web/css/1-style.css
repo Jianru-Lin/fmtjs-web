@@ -66,6 +66,11 @@ button:focus {
 	background: #2D2D2D;
 }
 
+#content {
+	padding: 1em;
+	overflow: auto;
+}
+
 #control {
 	display: flex;
     align-items: center;

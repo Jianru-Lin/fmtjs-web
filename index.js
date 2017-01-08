@@ -1,4 +1,4 @@
-var cache = require('./cache')
+var cache = require('./ditem/cache')
 var express = require('express')
 var app = express()
 
@@ -16,10 +16,22 @@ app.get('/stop', function(req, res) {
 
 module.exports = {
 	start: function() {
+		// app.listen(23400, '127.0.0.1')
 		app.listen(23400)
 	},
 	stop: function() {
-		throw new Error('TODO')
+		var http = require('http')
+		var index = require('./index')
+
+		var url = index.stop_url()
+		// console.log(url)
+
+		http.get(url, function(res) {
+			// console.log(res.statusCode)
+			// console.log('done.')
+		}).on('error', function(err) {
+			// ignore
+		})
 	},
 	start_bg: function() {
 		var path = require('path')
@@ -32,9 +44,6 @@ module.exports = {
 	},
 	url: function() {
 		return 'http://localhost:23400'
-	},
-	lv_url: function(id) {
-		return 'http://localhost:23400/lv.html?id=' + encodeURIComponent(id)
 	},
 	stop_url: function() {
 		return this.url() + '/stop'

@@ -218,7 +218,7 @@ type_handler['DebuggerStatement'] = function(ast, ctx) {
 
 type_handler['FunctionDeclaration'] = function(ast, ctx) {
 	// console.log(ast)
-	console.log(ast.body)
+	// console.log(ast.body)
 
 	return vdom(
 		'div',
@@ -456,11 +456,27 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 type_handler['BlockStatement'] = function(ast, ctx) {
 	ast.body = ordered_body(ast.body)
 
-	return vdom(
-		'div',
-		ast.type,
-		vdom('span', 'body', vbracket(process_ast_list(ast.body, ctx)))
-	)
+	if (ast.fmtjs_ref_id) {
+		return vdom(
+			'a',
+			{
+				'class': [ast.type, 'ref'].join(' '),
+				'data-ref-id': ast.fmtjs_ref_id
+			},
+			[
+				vdom('span', ['left-coll', 'bracket'], '{'),
+				// vdom('span', ['collapsable-switcher', 'bracket', 'hidden'], '...'),
+				vdom('span', ['right-coll', 'bracket'], '}')
+			]
+		)
+	}
+	else {
+		return vdom(
+			'div',
+			ast.type,
+			vdom('span', 'body', vbracket(process_ast_list(ast.body, ctx)))
+		)
+	}
 }
 
 type_handler['ClassDeclaration'] = function(ast, ctx) {
@@ -1066,7 +1082,7 @@ type_handler['AssignmentExpression'] = function(ast, ctx) {
 			// vdom('span', 'left', v_exp_brace(process_ast(ast.left, ctx))),
 			vdom('span', 'left', process_ast(ast.left, ctx)),
 			vsp(),
-			voperator('='),
+			voperator(ast.operator), // = | *= | += | ...
 			vsp(),
 			function() {
 				// 赋值表达式的右侧如果为序列表达式则必须要补括号

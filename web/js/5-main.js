@@ -57,6 +57,21 @@ var util = (function() {
 	return obj
 })();
 
+// 进度提示
+var progress = (function() {
+	return {
+		load_data: function() {
+			$('#content').text('Loading data...')
+		},
+		generate_dom: function() {
+			$('#content').text('Generating ast...')
+		},
+		finish: function() {
+			$('#content').text('')
+		}
+	}
+})();
+
 // 允许用户对某些结构进行水平／垂直布局切换
 function can_switch_horizontal_vertical_layout() {
 	
@@ -337,16 +352,14 @@ function can_highlight_same_identifier() {
 	})
 }
 
-// 加载数据
-function load_cache(name, cb) {
-	var id = utils.url_params('id')
-	if (!id) {
-		return
-	}
-
-	var url = id + '/' + name + '.json'
-	$.getJSON(url, function(data) {
-		cb(null, data)
+// 点击函数在新窗口中打开
+function can_open_fun_in_new_window() {
+	$('.BlockStatement.ref').each(function(i, item) {
+		var $item = $(item)
+		var ref_id = $item.attr('data-ref-id')
+		var url = '?id=' + encodeURIComponent(utils.url_params('id')) + '&ast=' + encodeURIComponent(ref_id)
+		$item.attr('target', '_blank')
+		$item.attr('href', url)
 	})
 }
 
@@ -380,9 +393,7 @@ $(function() {
 	}
 })
 
-// $(function() {
-window.onload = function() {
-
+$(function() {
 	// load...
 
 	var id = utils.url_params('id')
@@ -390,28 +401,44 @@ window.onload = function() {
 		return
 	}
 
-	load_cache('index', function(err, index) {
+	progress.load_data()
+	ditem.get('index', function(err, index) {
 		if (err) return
-		init(index)
+		ui.version(index.version)
+		ui.filename(index.filename)
+
+		var ast = utils.url_params('ast')
+		if (!ast) {
+			var target = 'ast'
+		}
+		else {
+			var target = 'ast-' + ast
+		}
+		ditem.get(target, function(err, ast) {
+			if (err) return
+			init(ast)
+		})
 	})
-}
-// })
+})
 
-function init(index) {
-	ui.version(index.version)
-	ui.filename(index.filename)
-
-	var ast = index.att.ast
-	var ctx = index.att.ctx
-	// console.log(ctx)
+function init(ast) {
+	var ctx = {}
 	try {
 		// $('#ast').text(JSON.stringify(ast, null, 4))
 		var vdom_item = process_ast(ast, ctx)
 		// $('#vdom').text(JSON.stringify(vdom_item, null, 4))
+		progress.generate_dom()
 		var dom = vdom_item.toDom()
+		progress.finish()
 		$('#content').append(dom)
 		setTimeout(function() {
 			$('#col-all')[0].click()
+
+			// if (utils.url_params('ast')) {
+			// 	setTimeout(function() {
+			// 		$('.collapsable-switcher:not(.hidden)')[0].click()
+			// 	}, 500)
+			// }
 		}, 0)
 	}
 	catch (err) {
@@ -426,4 +453,5 @@ function init(index) {
 	hide_unnecessary_exp_brace()
 	can_use_toolbar()
 	can_highlight_same_identifier()
+	can_open_fun_in_new_window()
 }

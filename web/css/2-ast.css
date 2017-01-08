@@ -18,11 +18,11 @@
 .lexical-env {
 	outline: solid 1px yellow;
 }
-
+/*
 .Program {
 	padding: 1em;
 	overflow: auto;
-}
+}*/
 
 .FunctionExpression > .body,
 .FunctionDeclaration > .body {
