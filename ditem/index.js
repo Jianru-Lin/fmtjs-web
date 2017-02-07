@@ -11,5 +11,5 @@ exports.create = function(id, data) {
 }
 
 exports.url_of = function(id) {
-	return require('../index.js').url() + '/lv.html?id=' + encodeURIComponent(id)
+	return require('../config').url() + '/lv.html?id=' + encodeURIComponent(id)
 }
