@@ -1,2 +1,4 @@
 node_modules/
 web/cache/
+web/lib/se.js
+web/se/test/dist/
