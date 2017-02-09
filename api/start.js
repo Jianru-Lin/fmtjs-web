@@ -27,7 +27,7 @@ module.exports = function(opt, cb) {
 		}
 	})();
 
-	app.listen(port, host, function() {
+	app.start(port, host, function() {
 		self.status(function(err, status) {
 			assert(!err)
 			onetime_cb(undefined, status)

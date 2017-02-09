@@ -7,7 +7,7 @@ module.exports = function(app) {
 		res.json({
 			ok: true,
 			version: require('../../package').version,
-			url: share.url,
+			url: share.url(),
 			timestamp: new Date().toISOString()
 		})
 	})
