@@ -390,6 +390,7 @@ $(function() {
 
 	ui.filename = function(v) {
 		title.filename = v
+		document.title = v
 	}
 })
 
