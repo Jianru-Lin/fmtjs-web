@@ -7,6 +7,7 @@ var app = express()
 var web_root_dir = path.resolve(__dirname, 'root')
 var cache_root_dir = cache.root()
 
+require('./handler/compile')(app)
 require('./handler/status')(app)
 require('./handler/stop')(app)
 
