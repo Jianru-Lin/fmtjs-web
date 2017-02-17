@@ -45,29 +45,13 @@ button:focus {
 	color: hsl(37, 100%, 71%);
 }
 
-#ast, #vdom, #content, #log {
+#content {
 	white-space: pre;
 	background: whitesmoke;
 	color: #171717;
-}
-
-#ast {
-	display: none;
-}
-
-#vdom {
-	background: white;
-	display: none;
-}
-
-#content {
 	color: #CCCCCC;
 	background: #2D2D2D;
-}
-
-#content {
 	padding: 1em;
-	overflow: auto;
 }
 
 #control {
@@ -136,21 +120,4 @@ button:focus {
 
 #control button:active {
 	box-shadow: inset 0 0 10px #050e0e;
-}
-
-#log {
-	background: #424242;
-    color: whitesmoke;
-}
-
-#log:empty {
-	display: none;
-}
-
-#log .info {
-	display: none;
-}
-
-#log .warning {
-	color: orange;
 }
