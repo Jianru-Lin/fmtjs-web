@@ -54,6 +54,14 @@ button:focus {
 	padding: 1em;
 }
 
+#content {
+	-webkit-tap-highlight-color: transparent;
+}
+
+#content > span, #content > div {
+z-indexwebkit-tap-highlight-color: black;
+}
+
 #control {
 	display: flex;
     align-items: center;
