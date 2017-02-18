@@ -184,6 +184,12 @@ function can_switch_horizontal_vertical_layout() {
 		$collapsable.toggleClass('vertical-layout')
 		$collapsable.toggleClass('area')
 	})
+
+	// IfStatement
+
+	$('#content').on('click', '.IfStatement > .part > .keyword:first-child', function() {
+		$(this).parent().parent().toggleClass('vertical-layout')
+	})
 }
 
 // 允许用户折叠／展开代码块

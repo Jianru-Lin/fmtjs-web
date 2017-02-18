@@ -154,6 +154,11 @@
     display: block;
 }
 
+#content .IfStatement.vertical-layout > .part {
+	display: block;
+	margin-bottom: 1.5em;
+}
+
 /* Syntax Highlight */
 
 .keyword {

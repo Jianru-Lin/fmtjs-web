@@ -725,28 +725,34 @@ type_handler['YieldExpression'] = function(ast, ctx) {
 }
 
 type_handler['IfStatement'] = function(ast, ctx) {
-	// console.log(ast)
-	return vdom(
-		'div',
-		ast.type,
-		[
-			vdom('span', 'keyword', 'if'),
+	var parts = flat(ast)
+	return vdom('div', [ast.type, parts.length > 3 ? 'vertical-layout' : undefined], parts.map(function(part, i) {
+		return vdom('span', 'part', [
+			vdom('span', 'keyword', (function() {
+				if (i === 0) return 'if'
+				else if (i === (parts.length - 1)) return 'else'
+				else return 'else if'
+			})()),
 			vsp(),
 			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
 			vsp(),
 			vdom('span', 'consequent', process_ast(ast.consequent, ctx)),
-			function() {
-				if (ast.alternate) {
-					return [
-						vsp(),
-						vdom('span', 'keyword', 'else'),
-						vsp(),
-						vdom('span', 'alternate', process_ast(ast.alternate, ctx))
-					]
-				}
-			}
-		]
-	)
+			vsp(),
+		])
+	}))
+
+	function flat(ast) {
+		var parts = []
+		parts.push(ast)
+		flat_to(ast.alternate, parts)
+		return parts
+
+		function flat_to(alternate_ast, parts) {
+			if (!alternate_ast) return
+			parts.push(alternate_ast)
+			flat_to(alternate_ast.alternate, parts)
+		}
+	}
 }
 
 type_handler['WhileStatement'] = function(ast, ctx) {
