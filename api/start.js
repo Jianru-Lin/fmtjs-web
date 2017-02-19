@@ -63,7 +63,7 @@ function run_in_background(opt, cb) {
 					assert(!err)
 					cb(undefined, status)
 				})
-			}, 500)
+			}, 1000)
 		}
 	)
 
