@@ -1282,7 +1282,7 @@ type_handler['SequenceExpression'] = function(ast, ctx) {
 type_handler['ArrayExpression'] = function(ast, ctx) {
 	return vdom(
 		'span',
-		ast.type,
+		[ast.type, ast.elements && ast.elements.length >= 5 ? 'vertical-layout' : undefined],
 		vdom('span', 'elements', vsqbracket(function() {
 			if (!ast.elements || ast.elements.length < 1) return
 			var elements = ast.elements.map(function(e) {
@@ -1419,7 +1419,7 @@ type_handler['AssignmentPattern'] = function(ast, ctx) {
 type_handler['ArrayPattern'] = function(ast, ctx) {
 	return vdom(
 		'span',
-		ast.type,
+		[ast.type, ast.elements && ast.elements.length >= 5 ? 'vertical-layout' : undefined],
 		vdom('span', 'elements', vsqbracket(function() {
 			if (!ast.elements || ast.elements.length < 1) return
 			// 把 elements 中为 null 的都转为 Array

@@ -126,18 +126,14 @@ function can_switch_horizontal_vertical_layout() {
 
 	$('#content').on('click', '.ArrayExpression > .elements > .collapsable.square-bracket > .comma', function() {
 		$this = $(this)
-		$collapsable = $this.parent()
-		$collapsable.toggleClass('vertical-layout')
-		$collapsable.toggleClass('area')
+		$this.parent().parent().parent().toggleClass('vertical-layout')
 	})
 
 	// ArrayPattern
 
 	$('#content').on('click', '.ArrayPattern > .elements > .collapsable.square-bracket > .comma', function() {
 		$this = $(this)
-		$collapsable = $this.parent()
-		$collapsable.toggleClass('vertical-layout')
-		$collapsable.toggleClass('area')
+		$this.parent().parent().parent().toggleClass('vertical-layout')
 	})
 
 	// FunctionExpression
