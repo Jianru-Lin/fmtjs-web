@@ -24,6 +24,15 @@
 	overflow: auto;
 }*/
 
+pre.comment {
+	color: #aaa;
+	transition: color 1s;
+}
+
+pre.comment:hover {
+	color: #eee;
+}
+
 .FunctionExpression > .body,
 .FunctionDeclaration > .body {
 	vertical-align: top;

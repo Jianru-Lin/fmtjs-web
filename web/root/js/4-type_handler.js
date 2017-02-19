@@ -13,7 +13,10 @@ type_handler['Program'] = function(ast, ctx) {
 	return vdom(
 		'div', 
 		[ast.type],
-		vdom('span', 'body', process_ast_list(ast.body, ctx))
+		[
+			comments(ast),
+			vdom('span', 'body', process_ast_list(ast.body, ctx))
+		]
 	)
 }
 
@@ -22,6 +25,7 @@ type_handler['ImportDeclaration'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('import'),
 			function() {
 				if (ast.specifiers && ast.specifiers.length > 0) {
@@ -95,6 +99,7 @@ type_handler['ExportAllDeclaration'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('export'),
 			vsp(),
 			vdom('span', 'asterisk', '*'),
@@ -115,6 +120,7 @@ type_handler['ExportNamedDeclaration'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('export'),
 			vsp(),
 			function() {
@@ -156,6 +162,7 @@ type_handler['ExportDefaultDeclaration'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('export'),
 			vsp(),
 			vkeyword('default'),
@@ -200,7 +207,10 @@ type_handler['EmptyStatement'] = function(ast, ctx) {
 	return vdom(
 		'div',
 		ast.type,
-		vsemi()
+		[
+			comments(ast),
+			vsemi()
+		]
 	)
 }
 
@@ -209,6 +219,7 @@ type_handler['DebuggerStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('debugger'),
 			vsp(),
 			vsemi()
@@ -224,6 +235,7 @@ type_handler['FunctionDeclaration'] = function(ast, ctx) {
 		'div',
 		[ast.type],
 		[
+			comments(ast),
 			vdom('span', 'keyword','function'),
 			vsp(),
 			function() {
@@ -436,6 +448,7 @@ type_handler['ExpressionStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vdom('span', 'expression', function() {
 				// 如果是函数表达式、对象或者类表达式的话，我们要给它补上括号，其他则没必要
 				if (ast.expression.type === 'FunctionExpression' ||
@@ -464,6 +477,7 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 				'data-ref-id': ast.fmtjs_ref_id
 			},
 			[
+				comments(ast),
 				vdom('span', ['left-coll', 'bracket'], '{'),
 				// vdom('span', ['collapsable-switcher', 'bracket', 'hidden'], '...'),
 				vdom('span', ['right-coll', 'bracket'], '}')
@@ -474,7 +488,10 @@ type_handler['BlockStatement'] = function(ast, ctx) {
 		return vdom(
 			'div',
 			ast.type,
-			vdom('span', 'body', vbracket(process_ast_list(ast.body, ctx)))
+			[
+				comments(ast),
+				vdom('span', 'body', vbracket(process_ast_list(ast.body, ctx)))
+			]
 		)
 	}
 }
@@ -484,6 +501,7 @@ type_handler['ClassDeclaration'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('class'),
 			vsp(),
 			function() {
@@ -558,6 +576,7 @@ type_handler['MethodDefinition'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
+			comments(ast),
 			function() {
 				if (ast['static']) {
 					return [
@@ -619,6 +638,7 @@ type_handler['VariableDeclaration'] = function(ast, ctx, ccfg) {
 			}
 		})(),
 		[
+			comments(ast),
 			vdom('span', ['kind', ast.kind], vkeyword(ast.kind)),
 			vsp(),
 			vdom('span', 'declarations', function() {
@@ -642,6 +662,7 @@ type_handler['VariableDeclarator'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
+			comments(ast),
 			vdom('span', 'id', process_ast(ast.id, ctx)),
 			function() {
 				if (ast.init) {
@@ -666,6 +687,7 @@ type_handler['WithStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('with'),
 			vsp(),
 			// 少见的括号在结构之上的例外
@@ -682,6 +704,7 @@ type_handler['ReturnStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vdom('span', 'keyword', 'return'),
 			function() {
 				if (ast.argument) {
@@ -702,6 +725,7 @@ type_handler['YieldExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
+			comments(ast),
 			vdom('span', 'keyword', 'yield'),
 			function() {
 				if (ast.delegate) {
@@ -726,20 +750,36 @@ type_handler['YieldExpression'] = function(ast, ctx) {
 
 type_handler['IfStatement'] = function(ast, ctx) {
 	var parts = flat(ast)
-	return vdom('div', [ast.type, parts.length > 3 ? 'vertical-layout' : undefined], parts.map(function(part, i) {
-		return vdom('span', 'part', [
-			vdom('span', 'keyword', (function() {
-				if (i === 0) return 'if'
-				else if (i === (parts.length - 1)) return 'else'
-				else return 'else if'
-			})()),
-			vsp(),
-			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
-			vsp(),
-			vdom('span', 'consequent', process_ast(ast.consequent, ctx)),
-			vsp(),
-		])
-	}))
+	console.log(parts)
+	return vdom(
+		'div', 
+		[ast.type, parts.length > 3 ? 'vertical-layout' : undefined], 
+		[
+			comments(ast),
+			function() {
+				return parts.map(function(part, i) {
+					if (part.type === 'IfStatement') {
+						return vdom('span', 'part', [
+							vdom('span', 'keyword', i === 0 ? 'if' : (i === part.length - 1) ? 'else' : 'else if'),
+							vsp(),
+							vdom('span', 'test', vbrace(process_ast(part.test, ctx))),
+							vsp(),
+							vdom('span', 'consequent', process_ast(part.consequent, ctx)),
+							vsp(),
+						])
+					}
+					else {
+						assert(i === parts.length - 1)
+						return vdom('span', 'part', [
+							vdom('span', 'keyword', 'else'),
+							vsp(),
+							vdom('span', 'alternate', process_ast(part, ctx))
+						])
+					}
+				})
+			}
+		]
+	)
 
 	function flat(ast) {
 		var parts = []
@@ -747,10 +787,12 @@ type_handler['IfStatement'] = function(ast, ctx) {
 		flat_to(ast.alternate, parts)
 		return parts
 
-		function flat_to(alternate_ast, parts) {
-			if (!alternate_ast) return
-			parts.push(alternate_ast)
-			flat_to(alternate_ast.alternate, parts)
+		function flat_to(node, parts) {
+			if (!node) return
+			parts.push(node)
+			if (node.type === 'IfStatement') {
+				flat_to(node.alternate, parts)
+			}
 		}
 	}
 }
@@ -761,6 +803,7 @@ type_handler['WhileStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('while'),
 			vsp(),
 			vdom('span', 'test', vbrace(process_ast(ast.test, ctx))),
@@ -776,6 +819,7 @@ type_handler['DoWhileStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('do'),
 			vsp(),
 			vdom('span', 'body', process_ast(ast.body, ctx)),
@@ -795,6 +839,7 @@ type_handler['TryStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('try'),
 			vsp(),
 			vdom('span', 'block', process_ast(ast.block, ctx)),
@@ -825,6 +870,7 @@ type_handler['CatchClause'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('catch'),
 			vsp(),
 			vdom('span', 'param', vbrace(process_ast(ast.param, ctx))),
@@ -840,6 +886,7 @@ type_handler['ForStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('for'),
 			vsp(),
 			// 少见的括号在结构之上的例外
@@ -886,6 +933,7 @@ type_handler['ForInStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('for'),
 			vsp(),
 			// 少见的括号在结构之上的例外
@@ -915,6 +963,7 @@ type_handler['ForOfStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('for'),
 			vsp(),
 			// 少见的括号在结构之上的例外
@@ -944,6 +993,7 @@ type_handler['ContinueStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('continue'),
 			function() {
 				if (ast.label) {
@@ -964,6 +1014,7 @@ type_handler['BreakStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('break'),
 			function() {
 				if (ast.label) {
@@ -985,6 +1036,7 @@ type_handler['LabeledStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vdom('span', 'label', process_ast(ast.label, ctx)),
 			vcolon(),
 			vsp(),
@@ -998,6 +1050,7 @@ type_handler['ThrowStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('throw'),
 			vsp(),
 			vdom('span', 'argument', process_ast(ast.argument, ctx)),
@@ -1012,6 +1065,7 @@ type_handler['SwitchStatement'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			vkeyword('switch'),
 			vsp(),
 			vdom('span', 'discriminant', function() {
@@ -1033,6 +1087,7 @@ type_handler['SwitchCase'] = function(ast, ctx) {
 		'div',
 		ast.type,
 		[
+			comments(ast),
 			function() {
 				// 一般的 case
 				if (ast.test) {
@@ -1061,6 +1116,7 @@ type_handler['CallExpression'] = function(ast, ctx) {
 		'span',
 		ast.type,
 		[
+			comments(ast),
 			vdom('span', 'callee', function() {
 				if (ast.callee.type === 'FunctionExpression') {
 					return v_exp_brace(process_ast(ast.callee, ctx))
@@ -1614,6 +1670,32 @@ function ordered_body(ast_body) {
 		return a.id.name.toLowerCase() < b.id.name.toLowerCase() ? -1 : 1
 	})
 	return statements.concat(sub_functions)
+}
+
+// 这个函数用于显示注释
+function comments(ast) {
+	if (ast.leadingComments) {
+		return vdom('pre', 'comment', ast.leadingComments.map(function(comment) {
+			if (comment.type === 'Block') {
+				var value = comment.value
+				value = value.split('\n').map(function(line) {if (/^\s+\*/.test(line)) {
+						return line.replace(/^\s+\*/, ' *')
+					}
+					else {
+						return line
+					}
+				}).join('\n')
+				var ret = '/*' + value + '*/'
+				if (/\n\s\s+\*\/$/.test(ret)) {
+					ret = ret.replace(/\n\s\s+\*\/$/, '\n */')
+				}
+				return ret
+			}
+			else {
+				return '// ' + comment.value.trim()
+			}
+		}).join('\n'))
+	}
 }
 
 ////////////////////////////////////////////////////////////////
