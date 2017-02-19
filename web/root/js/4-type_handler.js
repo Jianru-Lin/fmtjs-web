@@ -750,7 +750,6 @@ type_handler['YieldExpression'] = function(ast, ctx) {
 
 type_handler['IfStatement'] = function(ast, ctx) {
 	var parts = flat(ast)
-	console.log(parts)
 	return vdom(
 		'div', 
 		[ast.type, parts.length > 3 ? 'vertical-layout' : undefined], 
