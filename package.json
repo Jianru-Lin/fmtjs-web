@@ -1,6 +1,6 @@
 {
     "name": "fmtjs-web",
-    "version": "5.5.2",
+    "version": "5.5.3",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -12,8 +12,8 @@
     "dependencies": {
         "body-parser": "^1.16.1",
         "express": "^4.14.0",
-        "fmtjs": "5.5.2",
-        "fmtjs-loader": "5.5.2",
+        "fmtjs": "5.5.3",
+        "fmtjs-loader": "5.5.3",
         "request": "^2.79.0"
     },
     "devDependencies": {
