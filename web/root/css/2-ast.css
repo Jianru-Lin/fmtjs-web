@@ -25,8 +25,13 @@
 }*/
 
 pre.comment {
-	color: #aaa;
-	transition: color 1s;
+	margin: 0;
+	margin-bottom: 1.5em;
+    color: #aaa;
+    transition: color 1s;
+    padding: 1em;
+    background: #3c3c3c;
+    border-radius: 4px;
 }
 
 pre.comment:hover {
