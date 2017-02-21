@@ -1,6 +1,7 @@
 var fmtjs = require('fmtjs')
 var loader = require('fmtjs-loader')
 var version = require('../../package.json').version
+var pkgs = require('../../pkgs/')
 var share = require('../share/')
 
 var compile_service = {}
@@ -15,6 +16,30 @@ compile_service.text = function(info, cb) {
 		filename: info.filename,
 		content: info.content
 	}, cb)
+}
+
+compile_service.package = function(info, cb) {
+	if (typeof info.name !== 'string') {
+		cb(new Error('name required'))
+		return
+	}
+
+	var target = pkgs.resolve(info.name)
+	if (!target) {
+		cb(new Error('not found'))
+		return
+	}
+
+	loader.load(target, function(err, result) {
+		if (err) {
+			cb(err)
+			return
+		}
+		compile({
+			filename: target,
+			content: result.content
+		}, cb)
+	})
 }
 
 compile_service.file = function(info, cb) {
@@ -33,11 +58,6 @@ compile_service.file = function(info, cb) {
 			content: result.content
 		}, cb)
 	})
-}
-
-compile_service.npm_package = function(info, cb) {
-	// TODO
-	throw new Error('todo')
 }
 
 module.exports = function(app) {

@@ -68,6 +68,9 @@ var progress = (function() {
 		},
 		finish: function() {
 			$('#content').text('')
+		},
+		fail: function(err) {
+			$('#content').text(err.message)
 		}
 	}
 })();
@@ -399,13 +402,29 @@ $(function() {
 $(function() {
 	// load...
 
-	var id = utils.url_params('id')
-	if (!id) {
-		return
+	var id
+	
+	if (utils.url_params('id')) {
+		id = utils.url_params('id')
+		progress.load_data()
+		ditem.get(id, 'index', handle_index)
+	}
+	else if(utils.url_params('package')) {
+		var package = utils.url_params('package')
+		fmtjs_web.compile_service.package({
+			name: package
+		}, function(err, result) {
+			if (err) {
+				progress.fail(err)
+				return
+			}
+			id = result.id
+			ditem.get(id, 'index', handle_index)
+		})
 	}
 
-	progress.load_data()
-	ditem.get('index', function(err, index) {
+
+	function handle_index(err, index) {
 		if (err) return
 		ui.version(index.version)
 		ui.filename(index.filename)
@@ -417,11 +436,11 @@ $(function() {
 		else {
 			var target = 'ast-' + ast
 		}
-		ditem.get(target, function(err, ast) {
+		ditem.get(id, target, function(err, ast) {
 			if (err) return
 			init(ast)
 		})
-	})
+	}
 })
 
 function init(ast) {
