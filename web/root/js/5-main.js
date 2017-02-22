@@ -368,6 +368,19 @@ function can_open_fun_in_new_window() {
 	})
 }
 
+// 点击引用的模块名后在新窗口中打开
+function can_click_pkg_ref() {
+	var base_pkg_name = utils.url_params('package')
+	if (!base_pkg_name) return
+
+	$('a.pkg-ref').each(function(i, item) {
+		var $item = $(item)
+		var pkg_name = $item.attr('pkg-name')
+		$item.attr('target', '_blank')
+		$item.attr('href', '?package=' + pkg_name)
+	})
+}
+
 window.ui = {}
 
 $(function() {
@@ -476,4 +489,5 @@ function init(ast) {
 	can_use_toolbar()
 	can_highlight_same_identifier()
 	can_open_fun_in_new_window()
+	can_click_pkg_ref()
 }

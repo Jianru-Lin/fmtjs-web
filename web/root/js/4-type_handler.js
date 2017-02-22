@@ -1111,6 +1111,7 @@ type_handler['SwitchCase'] = function(ast, ctx) {
 }
 
 type_handler['CallExpression'] = function(ast, ctx) {
+
 	return vdom(
 		'span',
 		ast.type,
@@ -1126,6 +1127,28 @@ type_handler['CallExpression'] = function(ast, ctx) {
 			}),
 			vsp(),
 			vdom('span', 'arguments', function() {
+
+				// require('xxx') ?
+				if (ast.callee.type === 'Identifier' && 
+					ast.callee.name === 'require' &&
+					ast.arguments.length === 1 &&
+					ast.arguments[0].type === 'Literal' &&
+					typeof ast.arguments[0].value === 'string') {
+
+					return vbrace(
+						vdom(
+							'a', 
+							{
+								'class': 'pkg-ref',
+								'pkg-name': ast.arguments[0].value
+							},
+							vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
+								return [vcomma(), vsp()]
+							})
+						)
+					)
+				}
+
 				return vbrace(vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
 					return [vcomma(), vsp()]
 				}))

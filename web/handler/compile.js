@@ -3,6 +3,7 @@ var loader = require('fmtjs-loader')
 var version = require('../../package.json').version
 var pkgs = require('../../pkgs/')
 var share = require('../share/')
+var native_module_source = process.binding ("natives")
 
 var compile_service = {}
 
@@ -21,6 +22,15 @@ compile_service.text = function(info, cb) {
 compile_service.package = function(info, cb) {
 	if (typeof info.name !== 'string') {
 		cb(new Error('name required'))
+		return
+	}
+
+	// native module?
+	if (typeof native_module_source[info.name] === 'string') {
+		compile({
+			filename: info.name,
+			content: native_module_source[info.name]
+		}, cb)
 		return
 	}
 
