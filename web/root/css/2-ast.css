@@ -46,6 +46,10 @@ pre.comment ::selection {
 	text-shadow: 1px 1px white;
 }
 
+a.pkg-ref .Literal.string {
+	border-bottom: solid 1px;
+}
+
 .FunctionExpression > .body,
 .FunctionDeclaration > .body {
 	vertical-align: top;
