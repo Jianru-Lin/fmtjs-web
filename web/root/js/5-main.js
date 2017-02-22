@@ -377,8 +377,12 @@ function can_click_pkg_ref() {
 		var $item = $(item)
 		var pkg_name = $item.attr('pkg-name')
 		$item.attr('target', '_blank')
-		$item.attr('href', '?package=' + pkg_name)
+		$item.attr('href', 'require?parent=' + enc(base_pkg_name) + '&target=' + enc(pkg_name))
 	})
+
+	function enc(str) {
+		return encodeURIComponent(str).replace(/%2F/g, '/')
+	}
 }
 
 window.ui = {}

@@ -15,6 +15,7 @@ app.use(express.static(cache_root_dir))
 require('./handler/compile')(app)
 require('./handler/status')(app)
 require('./handler/stop')(app)
+require('./handler/require')(app)
 
 exports.start = function(port, host, cb) {
 	share.host = host
