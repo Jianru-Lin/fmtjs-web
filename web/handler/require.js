@@ -1,6 +1,7 @@
 var share = require('../share/')
 var app = require('../index')
 var pkgs = require('../../pkgs')
+var enc = require('../internal/enc')
 
 module.exports = function(app) {
 	app.get('/require', function(req, res) {
@@ -13,8 +14,4 @@ module.exports = function(app) {
 		}
 		res.redirect('lv.html?package=' + enc(package))
 	})
-
-	function enc(str) {
-		return encodeURIComponent(str).replace(/%2F/g, '/')
-	}
 }

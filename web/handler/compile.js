@@ -3,6 +3,7 @@ var loader = require('fmtjs-loader')
 var version = require('../../package.json').version
 var pkgs = require('../../pkgs/')
 var share = require('../share/')
+var enc = require('../internal/enc')
 var native_module_source = process.binding ("natives")
 
 var compile_service = {}
@@ -122,7 +123,8 @@ function compile(target, cb) {
 
 		var result = {
 			id: fmtjs_result.id,
-			url: share.url() + '/lv.html?id=' + fmtjs_result.id
+			id_url: share.url() + '/lv.html?id=' + fmtjs_result.id,
+			url: share.url() + '/lv.html?package=' + enc(filename)
 		}
 
 		cb(null, result)

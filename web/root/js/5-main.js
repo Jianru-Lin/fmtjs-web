@@ -376,6 +376,11 @@ function can_click_pkg_ref() {
 	$('a.pkg-ref').each(function(i, item) {
 		var $item = $(item)
 		var pkg_name = $item.attr('pkg-name')
+		if (pkg_name === 'native_module') {
+			$item.attr('href', 'javascript:alert("native_module is not a real module in node.js.")')
+			item.classList.add('invalid')
+			return
+		}
 		$item.attr('target', '_blank')
 		$item.attr('href', 'require?parent=' + enc(base_pkg_name) + '&target=' + enc(pkg_name))
 	})

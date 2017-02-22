@@ -50,6 +50,10 @@ a.pkg-ref .Literal.string {
 	border-bottom: solid 1px;
 }
 
+a.pkg-ref.invalid .Literal.string {
+	color: #aaa;
+}
+
 .FunctionExpression > .body,
 .FunctionDeclaration > .body {
 	vertical-align: top;
