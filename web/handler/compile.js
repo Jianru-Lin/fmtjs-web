@@ -26,6 +26,21 @@ compile_service.package = function(info, cb) {
 		return
 	}
 
+	// url?
+	if (/^https?:\/\//i.test(info.name)) {
+		loader.load(info.name, function(err, result) {
+			if (err) {
+				cb(err)
+				return
+			}
+			compile({
+				filename: result.filename,
+				content: result.content
+			}, cb)
+		})
+		return
+	}
+
 	// native module?
 	if (typeof native_module_source[info.name] === 'string') {
 		compile({
