@@ -2,6 +2,8 @@ var share = require('../share/')
 var app = require('../index')
 var pkgs = require('../../pkgs')
 var enc = require('../internal/enc')
+var is_npm_package_name = require('../internal/is_npm_package_name')
+var is_url = require('../internal/is_url')
 var resolve_path = require('path').resolve
 var dirname = require('path').dirname
 var parse_url = require('url').parse
@@ -44,12 +46,4 @@ module.exports = function(app) {
 
 function lv_packge_url(package) {
 	return 'lv.html?package=' + enc(package)
-}
-
-function is_npm_package_name(str) {
-	return str && str[0] !== '.' && str[0] !== '/'
-}
-
-function is_url(str) {
-	return /^https?:\/\//i.test(str)
 }

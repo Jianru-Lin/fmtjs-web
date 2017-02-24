@@ -411,13 +411,18 @@ $(function() {
 	var title = new Vue({
 		el: '#title',
 		data: {
-			filename: ''
+			filename: '',
+			package: ''
 		}
 	})
 
 	ui.filename = function(v) {
 		title.filename = v
 		document.title = v
+	}
+
+	ui.package = function(v) {
+		title.package = v
 	}
 })
 
@@ -450,6 +455,7 @@ $(function() {
 		if (err) return
 		ui.version(index.version)
 		ui.filename(index.filename)
+		ui.package(utils.url_params('package'))
 
 		var ast = utils.url_params('ast')
 		if (!ast) {

@@ -4,6 +4,8 @@ var version = require('../../package.json').version
 var pkgs = require('../../pkgs/')
 var share = require('../share/')
 var enc = require('../internal/enc')
+var is_url = require('../internal/is_url')
+var is_npm_package_name = require('../internal/is_npm_package_name')
 var native_module_source = process.binding ("natives")
 
 var compile_service = {}
@@ -27,7 +29,7 @@ compile_service.package = function(info, cb) {
 	}
 
 	// url?
-	if (/^https?:\/\//i.test(info.name)) {
+	if (is_url(info.name)) {
 		loader.load(info.name, function(err, result) {
 			if (err) {
 				cb(err)
@@ -52,7 +54,12 @@ compile_service.package = function(info, cb) {
 
 	var target = pkgs.resolve(info.name)
 	if (!target) {
-		cb(new Error('not found'))
+		if (is_npm_package_name(info.name)) {
+			cb(new Error('Package ' + JSON.stringify(info.name) + ' not found, maybe you didn\'t installed it yet.'))
+		}
+		else {
+			cb(new Error('Not found: ' + info.name))
+		}
 		return
 	}
 
@@ -150,7 +157,7 @@ function compile(target, cb) {
 
 	function name_part_of(filename) {
 		var pathname = null
-		if (/^https?:\/\//i.test(filename)) {
+		if (is_url(filename)) {
 			pathname = require('url').parse(filename).pathname
 		}
 		else {

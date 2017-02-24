@@ -45,6 +45,13 @@ button:focus {
 	color: hsl(37, 100%, 71%);
 }
 
+#title .package {
+	margin-bottom: 9px;
+    margin-top: 9px;
+    color: hsl(37, 100%, 71%);
+    font-size: 75%;
+}
+
 #content {
 	white-space: pre;
 	background: whitesmoke;
