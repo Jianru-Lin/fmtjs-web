@@ -134,6 +134,23 @@ function vdom(name, attrs, children) {
 	return new VDom(name, attrs, children)
 }
 
+// vdom package reference
+function vpkgref(pkg_name, children) {
+	return vdom(
+		'a', 
+		{
+			'class': 'pkg-ref',
+			'pkg-name': pkg_name
+		},
+		children
+	)
+}
+
+// vdom import module reference
+function vpkgref_i(pkg_name, children) {
+	return vpkgref('./' + pkg_name, children)
+}
+
 // vdom keyword
 function vkeyword(text) {
 	return vdom('span', ['keyword', text], text)

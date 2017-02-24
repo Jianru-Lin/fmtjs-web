@@ -40,7 +40,7 @@ type_handler['ImportDeclaration'] = function(ast, ctx) {
 			vsp(),
 			vkeyword('from'),
 			vsp(),
-			vdom('span', 'source', process_ast(ast.source, ctx)),
+			vdom('span', 'source', vpkgref_i(ast.source.value, process_ast(ast.source, ctx))),
 			vsp(),
 			vsemi()
 		]
@@ -1134,14 +1134,11 @@ type_handler['CallExpression'] = function(ast, ctx) {
 					ast.arguments.length === 1 &&
 					ast.arguments[0].type === 'Literal' &&
 					typeof ast.arguments[0].value === 'string') {
+					var pkg_name = ast.arguments[0].value
 
 					return vbrace(
-						vdom(
-							'a', 
-							{
-								'class': 'pkg-ref',
-								'pkg-name': ast.arguments[0].value
-							},
+						vpkgref(
+							pkg_name, 
 							vjoin(process_ast_list(ast.arguments, ctx).map(wrap_vdom('span', 'argument')), function() {
 								return [vcomma(), vsp()]
 							})
