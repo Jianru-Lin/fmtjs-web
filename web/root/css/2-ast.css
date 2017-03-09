@@ -25,6 +25,11 @@
 	overflow: auto;
 }*/
 
+/* 暂时不显示 BlockStatement 的注释，因为布局需要修正 */
+.BlockStatement > .comment {
+    display: none;
+}
+
 pre.comment {
 	margin: 0;
 	margin-bottom: 1.5em;
