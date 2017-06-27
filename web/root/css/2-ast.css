@@ -323,3 +323,27 @@ a.pkg-ref.invalid .Literal.string {
 #content .MemberExpression.highlight-operator > .property {
 	outline: solid 1px #515151;
 }
+
+/* 元素索引标记 */
+
+#content .ArrayExpression:not(.vertical-layout) .index-tag {
+	display: none;
+}
+
+#content .index-tag {
+	display: inline-block;
+	min-width: 1em;
+	height: 1em;
+	opacity: 0.5;
+	margin-right: 0.5em;
+	border: solid 1px;
+	padding: 0 2px;
+	border-radius: 2px;
+    text-align: center;
+    line-height: 1em;
+    transition: opacity 1s;
+}
+
+#content .index-tag:hover {
+	opacity: 1;
+}

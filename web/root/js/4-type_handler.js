@@ -1370,7 +1370,7 @@ type_handler['ArrayExpression'] = function(ast, ctx) {
 					return e
 				}
 			})
-			return vjoin(process_ast_list(elements, ctx).map(wrap_vdom('span', 'element')), function() {
+			return vjoin(process_ast_list(elements, ctx).map(wrap_vdom('span', 'element', add_element_index_tag)), function() {
 				return [vcomma(), vsp()]
 			})
 		}))
@@ -1722,9 +1722,12 @@ function comments(ast) {
 ////////////////////////////////////////////////////////////////
 
 // 这个是用来和 [].map() 函数配合，进行节点包装的
-function wrap_vdom(name, attrs) {
-	return function(vdom_item) {
-		return vdom(name, attrs, [vdom_item])
+function wrap_vdom(name, attrs, f) {
+	return function(vdom_item, i) {
+		if (!f) 
+			return vdom(name, attrs, [vdom_item])
+		else 
+			return vdom(name, attrs, f(vdom_item, i))
 	}
 }
 
@@ -1752,4 +1755,11 @@ function wrap_type_handler(name, new_handler_factory) {
 	assert(typeof type_handler[name] === 'function')
 	var handler = type_handler[name]
 	return new_handler_factory(handler)
+}
+
+// 为元素添加索引编号（常用于数组环境，与 wrap_vdom() 配合）
+function add_element_index_tag(element, i) {
+	var tag = vdom('span', {'class': 'index-tag'}, [i.toString()])
+	var element_span = vdom('span', {'class': 'element-span'}, element)
+	return [tag, element_span]
 }
