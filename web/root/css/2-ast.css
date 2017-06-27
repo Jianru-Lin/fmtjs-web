@@ -84,6 +84,10 @@ a.pkg-ref.invalid .Literal.string {
 	vertical-align: top;
 }
 
+.TemplateLiteral > span {
+	vertical-align: top;
+}
+
 .ObjectExpression > .properties > .collapsable,
 .ObjectPattern > .properties > .collapsable {
 	margin-top: -1em;
